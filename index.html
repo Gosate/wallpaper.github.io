@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>벽지 롤 계산기</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      margin: 20px;
+    }
+    input[type="number"] {
+      width: 100%;
+      max-width: 60px;
+      margin-bottom: 10px;
+    }
+    button {
+      width: 100%;
+      max-width: 150px;
+      padding: 10px;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>벽지 롤 계산기</h1>
+  <p>벽의 개수: <input type="number" id="wallCount" value="1" min="1" oninput="updateWallInputs()" /></p>
+  <div id="wallInputs">
+    <p>벽 1의 폭 (cm): <input type="number" id="wallWidth0" value="0" min="0" /> 높이 (cm): <input type="number" id="wallHeight0" value="0" min="0" /></p>
+  </div>
+  <button onclick="calculateWallpaperRolls()">계산하기</button>
+  <p id="result"></p>
+
+  <script>
+    function calculateWallpaperRolls() {
+      const widthPerRoll = 50; // 벽지 폭 (cm)
+      const lengthPerRoll = 1000; // 벽지 길이 (cm)
+
+      const wallCount = parseInt(document.getElementById("wallCount").value);
+      let totalRolls = 0;
+
+      for (let i = 0; i < wallCount; i++) {
+        const wallWidth = parseInt(document.getElementById("wallWidth" + i).value);
+        const wallHeight = parseInt(document.getElementById("wallHeight" + i).value);
+
+        const rollsNeeded = Math.ceil((wallWidth * wallHeight) / (widthPerRoll * lengthPerRoll));
+        totalRolls += rollsNeeded;
+      }
+
+      document.getElementById("result").innerText = "필요한 벽지 롤 수: " + totalRolls;
+    }
+
+    function updateWallInputs() {
+      const wallCount = parseInt(document.getElementById("wallCount").value);
+      const wallInputs = document.getElementById("wallInputs");
+      wallInputs.innerHTML = "";
+
+      for (let i = 0; i < wallCount; i++) {
+        wallInputs.innerHTML += '<p>벽 ' + (i + 1) + '의 폭 (cm): <input type="number" id="wallWidth' + i + '" value="0" min="0" /> 높이 (cm): <input type="number" id="wallHeight' + i + '" value="0" min="0" /></p>';
+      }
+    }
+  </script>
+</body>
+</html>
